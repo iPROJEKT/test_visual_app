@@ -30,3 +30,24 @@ async def get_user_by_name(
         )
     )
     return user.scalars().first()
+
+
+async def get_user_by_email(
+    email_name: str,
+    session: AsyncSession,
+) -> None:
+    user = await session.execute(
+        select(
+            User
+        ).where(
+            User.email == email_name
+        )
+    )
+    return user.scalars().first()
+
+
+async def get_all_user(
+    session: AsyncSession
+) -> User:
+    db_objects = await session.execute(select(User))
+    return db_objects.scalars().all()

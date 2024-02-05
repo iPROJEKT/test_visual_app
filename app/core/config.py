@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
 
     class Config:
+        arbitrary_types_allowed = True
         env_file = '..env'
 
 settings = Settings()

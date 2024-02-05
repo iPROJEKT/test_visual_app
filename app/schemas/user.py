@@ -1,13 +1,15 @@
+import re
+
 from typing import Optional
 from datetime import datetime
 
-from sqlalchemy_utils import EmailType
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 
 
 class UserCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=50)
-    email: str
+    email: EmailStr
 
     class Config:
         orm_mode = True
+
