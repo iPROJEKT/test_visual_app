@@ -1,13 +1,13 @@
 from sqlalchemy import select
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.user import User
+from app.models.user import User
 
-from schemas.user import UserCreate
+from app.schemas.user import UserBase
 
 
 async def create_user(
-    new_user: UserCreate,
+    new_user: UserBase,
     session: AsyncSession,
 ) -> User:
     new_user_data = new_user.dict()
@@ -35,7 +35,7 @@ async def get_user_by_name(
 async def get_user_by_email(
     email_name: str,
     session: AsyncSession,
-) -> None:
+) -> User:
     user = await session.execute(
         select(
             User
@@ -51,3 +51,17 @@ async def get_all_user(
 ) -> User:
     db_objects = await session.execute(select(User))
     return db_objects.scalars().all()
+
+
+async def get_user_by_id(
+    id: int,
+    session: AsyncSession
+) -> User:
+    user = await session.execute(
+        select(
+            User
+        ).where(
+            User.id == id
+        )
+    )
+    return user.scalars().first()

@@ -6,10 +6,17 @@ from datetime import datetime
 from pydantic import BaseModel, Field, EmailStr
 
 
-class UserCreate(BaseModel):
-    name: str = Field(..., min_length=1, max_length=50)
+class UserBase(BaseModel):
+    name: str
     email: EmailStr
 
     class Config:
         orm_mode = True
 
+
+class UserGet(UserBase):
+    id: int
+    create_date: datetime
+
+    class Config:
+        orm_mode = True

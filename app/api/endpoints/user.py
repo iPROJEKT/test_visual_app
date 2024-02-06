@@ -1,20 +1,22 @@
-from fastapi import APIRouter, Depends
+from http import HTTPStatus
+
+from fastapi import APIRouter, Depends, HTTPException
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.db import get_async_session
-from schemas.user import UserCreate
-from crud.user import create_user, get_all_user
+from app.core.db import get_async_session
+from app.schemas.user import UserBase, UserGet
+from app.crud.user import create_user, get_all_user, get_user_by_id
 from .valid import check_name_duplicate, check_email_duplicate
 
 router = APIRouter()
 
 @router.post(
     '/',
-    response_model=UserCreate,
+    response_model=UserBase,
 )
 async def user_post(
-    user: UserCreate,
+    user: UserBase,
     session: AsyncSession = Depends(get_async_session),
 ):
     await check_name_duplicate(user.name, session)
@@ -29,3 +31,24 @@ async def user_post(
     session: AsyncSession = Depends(get_async_session),
 ):
     return await get_all_user(session)
+
+
+@router.get(
+    '/{user_id}',
+)
+async def id_user_get(
+    user_id: int,
+    session: AsyncSession = Depends(get_async_session),
+):
+    user = await (
+        get_user_by_id(
+            id=user_id, session=session
+        )
+    )
+    if user is None:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail='Такого юзера нет'
+        )
+
+    return user
