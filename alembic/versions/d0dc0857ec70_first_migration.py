@@ -25,10 +25,8 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('email', sqlalchemy_utils.types.email.EmailType(length=255), nullable=True),
     sa.Column('create_date', sa.DateTime(), nullable=True),
-    sa.Column('user_name', sa.String(length=50), nullable=True, unique=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('user_name')
     )
     # ### end Alembic commands ###
 
