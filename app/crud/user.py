@@ -26,7 +26,7 @@ async def get_user_by_name(
         select(
             User
         ).where(
-            User.name == user_name
+            User.user_name == user_name
         )
     )
     return user.scalars().first()

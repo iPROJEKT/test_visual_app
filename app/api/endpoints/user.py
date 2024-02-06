@@ -19,7 +19,7 @@ async def user_post(
     user: UserBase,
     session: AsyncSession = Depends(get_async_session),
 ):
-    await check_name_duplicate(user.name, session)
+    await check_name_duplicate(user.user_name, session)
     await check_email_duplicate(user.email, session)
     return await create_user(user, session)
 

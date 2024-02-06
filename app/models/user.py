@@ -7,11 +7,11 @@ from app.core.db import Base
 
 
 class User(Base):
-    name = Column(
-        String(50),
+    user_name = Column(
+        String(100,),
         unique=True,
         nullable=False
-    ),
+    )
     email = Column(
         EmailType,
         unique=True
@@ -20,3 +20,4 @@ class User(Base):
         DateTime,
         default=datetime.now
     )
+
