@@ -65,3 +65,12 @@ async def get_user_by_id(
         )
     )
     return user.scalars().first()
+
+
+async def remove(
+    id: int,
+    session: AsyncSession,
+):
+    await session.delete(id)
+    await session.commit()
+    return id
